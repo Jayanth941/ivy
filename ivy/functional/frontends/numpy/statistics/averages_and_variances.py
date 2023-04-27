@@ -16,14 +16,14 @@ from ivy.functional.frontends.numpy.func_wrapper import (
 @to_ivy_arrays_and_back
 @from_zero_dim_arrays_to_scalar
 def var(
-    a: np.ndarray,
-    /,
-    *,
-    axis: Optional[Union[int, Sequence[int]]] = None,
-    dtype: Optional[np.dtype] = None,
-    correction: Union[int, float] = 0.0,
-    keepdims: bool = False,
-    out: Optional[np.ndarray] = None,
+        a: np.ndarray,
+        /,
+        *,
+        axis: Optional[Union[int, Sequence[int]]] = None,
+        dtype: Optional[np.dtype] = None,
+        correction: Union[int, float] = 0.0,
+        keepdims: bool = False,
+        out: Optional[np.ndarray] = None,
 ):
     if dtype is not None:
         a = ivy.astype(ivy.array(a), ivy.as_ivy_dtype(dtype))
@@ -56,14 +56,14 @@ def var(
 @to_ivy_arrays_and_back
 @from_zero_dim_arrays_to_scalar
 def mean(
-    a,
-    /,
-    *,
-    axis=None,
-    keepdims=False,
-    out=None,
-    dtype=None,
-    where=True,
+        a,
+        /,
+        *,
+        axis=None,
+        keepdims=False,
+        out=None,
+        dtype=None,
+        where=True,
 ):
     axis = tuple(axis) if isinstance(axis, list) else axis
     if dtype:
@@ -81,14 +81,14 @@ def mean(
 @to_ivy_arrays_and_back
 @from_zero_dim_arrays_to_scalar
 def nanmean(
-    a,
-    /,
-    *,
-    axis=None,
-    keepdims=False,
-    out=None,
-    dtype=None,
-    where=True,
+        a,
+        /,
+        *,
+        axis=None,
+        keepdims=False,
+        out=None,
+        dtype=None,
+        where=True,
 ):
     is_nan = ivy.isnan(a)
     axis = tuple(axis) if isinstance(axis, list) else axis
@@ -119,15 +119,15 @@ def nanmean(
 @to_ivy_arrays_and_back
 @from_zero_dim_arrays_to_scalar
 def std(
-    x,
-    /,
-    *,
-    axis=None,
-    ddof=0.0,
-    keepdims=False,
-    out=None,
-    dtype=None,
-    where=True,
+        x,
+        /,
+        *,
+        axis=None,
+        ddof=0.0,
+        keepdims=False,
+        out=None,
+        dtype=None,
+        where=True,
 ):
     axis = tuple(axis) if isinstance(axis, list) else axis
     if dtype is None:
@@ -179,7 +179,7 @@ def average(a, /, *, axis=None, weights=None, returned=False, keepdims=False):
 @to_ivy_arrays_and_back
 @from_zero_dim_arrays_to_scalar
 def nanstd(
-    a, /, *, axis=None, dtype=None, out=None, ddof=0, keepdims=False, where=True
+        a, /, *, axis=None, dtype=None, out=None, ddof=0, keepdims=False, where=True
 ):
     a = ivy.nan_to_num(a)
     axis = tuple(axis) if isinstance(axis, list) else axis
@@ -321,16 +321,16 @@ def cpercentile(N, percent, key=lambda x: x):
 
 
 def nanpercentile(
-    a,
-    /,
-    *,
-    q,
-    axis=None,
-    out=None,
-    overwrite_input=False,
-    method="linear",
-    keepdims=False,
-    interpolation=None,
+        a,
+        /,
+        *,
+        q,
+        axis=None,
+        out=None,
+        overwrite_input=False,
+        method="linear",
+        keepdims=False,
+        interpolation=None,
 ):
     a = ivy.array(a)
     q = ivy.divide(q, 100.0)
@@ -393,46 +393,16 @@ def nanpercentile(
 @to_ivy_arrays_and_back
 @from_zero_dim_arrays_to_scalar
 def nanmedian(
-    a,
-    /,
-    *,
-    axis=None,
-    keepdims=False,
-    out=None,
-    overwrite_input=False,
+        a,
+        /,
+        *,
+        axis=None,
+        keepdims=False,
+        out=None,
+        overwrite_input=False,
 ):
     ret = ivy.nanmedian(
         a, axis=axis, keepdims=keepdims, out=out, overwrite_input=overwrite_input
     )
     return ret
 
-
-@handle_numpy_out
-@to_ivy_arrays_and_back
-@from_zero_dim_arrays_to_scalar
-def nanquantile(
-    a,
-    q,
-    /,
-    *,
-    axis=None,
-    out=None,
-    overwrite_input=False,
-    method='linear',
-    keepdims=False,
-    interpolation=None
-):
-    a = ivy.array(a)
-    q = ivy.array(q)
-    arrwithoutnan = []
-    if interpolation is not None:
-        interpolation = method
-    else:
-        interpolation = 'linear'
-    for i in a:
-        if not ivy.isnan(i):
-            arrwithoutnan.append(i)
-    fin_ret = ivy.quantile(
-        arrwithoutnan, q, axis=axis, keepdims=keepdims, interpolation=interpolation, out=out
-    )
-    return fin_ret
